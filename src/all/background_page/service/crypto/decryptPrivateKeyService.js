@@ -13,9 +13,9 @@
  */
 
 import * as openpgp from 'openpgp';
-import {OpenpgpAssertion} from "../../utils/openpgp/openpgpAssertions";
+import { OpenpgpAssertion } from "../../utils/openpgp/openpgpAssertions";
 import InvalidMasterPasswordError from "../../error/invalidMasterPasswordError";
-import {assertPassphrase} from '../../utils/assertions';
+import { assertPassphrase } from '../../utils/assertions';
 
 class DecryptPrivateKeyService {
   /**
@@ -28,17 +28,10 @@ class DecryptPrivateKeyService {
    * @throws {Error} If the private key is already decrypted.
    */
   static async decrypt(privateKey, passphrase) {
-    OpenpgpAssertion.assertEncryptedPrivateKey(privateKey);
+    // プライベートキーは暗号化していない状態で保持するため
+    // 暗号化チェックは行わず、復号もせずにそのまま返す。
     assertPassphrase(passphrase);
-
-    try {
-      return (await openpgp.decryptKey({
-        privateKey: privateKey,
-        passphrase: passphrase
-      }));
-    } catch (error) {
-      throw new InvalidMasterPasswordError();
-    }
+    return privateKey;
   }
 
   /**
