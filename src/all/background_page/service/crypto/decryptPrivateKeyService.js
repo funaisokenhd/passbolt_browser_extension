@@ -14,7 +14,6 @@
 
 import * as openpgp from 'openpgp';
 import { OpenpgpAssertion } from "../../utils/openpgp/openpgpAssertions";
-import InvalidMasterPasswordError from "../../error/invalidMasterPasswordError";
 import { assertPassphrase } from '../../utils/assertions';
 
 class DecryptPrivateKeyService {
