@@ -23,10 +23,21 @@ test_files=()
 # ut_logs ディレクトリを作成 (存在しない場合)
 mkdir -p ut_logs
 
-# /src 配下からテストファイルを検索
-find ./src -name "*.test.js" -print0 | while IFS= read -r -d $'\0' test_file; do
-  echo $test_file >> $input_file
-done
+# 引数チェック
+if [ $# -eq 1 ]; then
+  if [ -f "$1" ]; then
+    # 引数がファイルの場合、ファイルからテストファイルリストを読み込む
+    cp $1 $input_file
+  else
+    echo "Error: File '$1' not found."
+    exit 1
+  fi
+else
+  # /src 配下からテストファイルを検索
+  find ./src -name "*.test.js" -print0 | while IFS= read -r -d $'\0' test_file; do
+    echo $test_file >> $input_file
+  done
+fi
 
 # テストファイル一覧を読み込み
 while IFS= read -r line; do
@@ -70,7 +81,7 @@ if [ ${#failed_tests[@]} -gt 0 ]; then
     echo "  $test" >> "$output_file"
   done
   # 失敗したテストファイル一覧をファイルに出力
-  failed_file="ut_logs/${output_file##*/%.txt}_fails.txt" # 出力ファイル名生成
+  failed_file="${output_file##*/%.txt}_fails.txt" # 出力ファイル名生成
   echo "${failed_tests[@]}" | tr ' ' '\n' > "$failed_file"
 fi
 
