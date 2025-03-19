@@ -12,6 +12,7 @@
  * @since         3.6.0
  */
 import DecryptPrivateKeyService from "./decryptPrivateKeyService";
+import InvalidMasterPasswordError from '../../error/invalidMasterPasswordError';
 import { pgpKeys } from 'passbolt-styleguide/test/fixture/pgpKeys/keys';
 import { OpenpgpAssertion } from "../../utils/openpgp/openpgpAssertions";
 
@@ -25,17 +26,17 @@ describe("DecryptPrivateKey service", () => {
   it('should throw an InvalidMasterPasswordError when the passphrase is not correct', async () => {
     expect.assertions(1);
     const key = await OpenpgpAssertion.readKeyOrFail(pgpKeys.ada.private);
-    await expect(DecryptPrivateKeyService.decrypt(key, "wrong passphrase")).resolves.toStrictEqual(key);
+    await expect(DecryptPrivateKeyService.decrypt(key, "wrong passphrase")).rejects.toThrow(new InvalidMasterPasswordError());
   }, 10 * 1000);
 
   it('should throw an Error if the private key is already decrypted', async () => {
-    expect.assertions(0);
+    expect.assertions(1);
     try {
       const key = await OpenpgpAssertion.readKeyOrFail(pgpKeys.ada.private_decrypted);
       await DecryptPrivateKeyService.decrypt(key, "");
     } catch (e) {
-      // プライベートキーの暗号化チェックをバイパスしたため、例外は発生しない。
-      expect(e).toStrictEqual(new Error("The private key should be encrypted."));
+      // PGP秘密鍵が暗号化されていなくてもエラーにしないため、パスフレーズのエラーで検出される。
+      expect(e).toStrictEqual(new InvalidMasterPasswordError("This is not a valid passphrase"));
     }
   }, 10 * 1000);
 

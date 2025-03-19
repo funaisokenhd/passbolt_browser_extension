@@ -484,6 +484,7 @@ describe("OpenPGP Assertions", () => {
         { input: true, expectedError: typeError },
         { input: adaPublicKey, expectedError: typeError },
         { input: message, expectedError: typeError },
+        { input: adaPrivateKey, expectedError: new Error("The private key should be encrypted.") },
       ];
 
       expect.assertions(scenarios.length);
@@ -515,11 +516,10 @@ describe("OpenPGP Assertions", () => {
         pgpKeys.ada.private_decrypted,
       ]);
 
-      expect.assertions(0);
+      expect.assertions(1);
       try {
         OpenpgpAssertion.assertEncryptedPrivateKeys(readKeys);
       } catch (e) {
-        // プライベートキーの暗号化チェックをバイパスしたため、例外は発生しない。
         expect(e).toStrictEqual(new Error("The private key should be encrypted."));
       }
     });

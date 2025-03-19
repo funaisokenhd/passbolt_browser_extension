@@ -274,8 +274,7 @@ const assertDecryptedPrivateKeys = keys => {
 const assertEncryptedPrivateKey = key => {
   assertPrivateKey(key);
   if (key.isDecrypted()) {
-    // プレイベートキーは暗号化せずに持つため例外送出しない
-    console.log("The private key should be encrypted.");
+    throw new Error(i18n.t("The private key should be encrypted."));
   }
 };
 
