@@ -30,7 +30,7 @@ class DecryptPrivateKeyService {
   static async decrypt(privateKey, passphrase) {
     assertPassphrase(passphrase);
     // PGP秘密鍵が復号済みでもエラーとしない。
-    if (privateKey.isDecrypted) {
+    if (!privateKey.isDecrypted()) {
       try {
         return (await openpgp.decryptKey({
           privateKey: privateKey,

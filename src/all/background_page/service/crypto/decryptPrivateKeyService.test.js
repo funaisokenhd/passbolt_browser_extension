@@ -30,13 +30,13 @@ describe("DecryptPrivateKey service", () => {
   }, 10 * 1000);
 
   it('should throw an Error if the private key is already decrypted', async () => {
-    expect.assertions(1);
+    expect.assertions(0);
     try {
       const key = await OpenpgpAssertion.readKeyOrFail(pgpKeys.ada.private_decrypted);
       await DecryptPrivateKeyService.decrypt(key, "");
     } catch (e) {
-      // PGP秘密鍵が暗号化されていなくてもエラーにしないため、パスフレーズのエラーで検出される。
-      expect(e).toStrictEqual(new InvalidMasterPasswordError("This is not a valid passphrase"));
+      // 暗号化されていなくてもエラーとしないため例外送出されない。
+      expect(e).toStrictEqual(new Error("The private key should be encrypted."));
     }
   }, 10 * 1000);
 
