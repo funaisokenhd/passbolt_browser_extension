@@ -11,20 +11,9 @@
  * @link          https://www.passbolt.com Passbolt(tm)
  * @since         3.4.0
  */
-import React from "react";
-import ReactDOM from "react-dom";
-import ExtInFormMenu from "passbolt-styleguide/src/react-web-integration/ExtInFormMenu";
-import Port from "../lib/port";
 
 async function main() {
-  const query = new URLSearchParams(window.location.search);
-  const portname = query.get('passbolt');
-  const port = new Port(portname);
-  await port.connect();
-  const storage = browser.storage;
-  const domContainer = document.createElement("div");
-  document.body.appendChild(domContainer);
-  ReactDOM.render(React.createElement(ExtInFormMenu, {port: port, storage: storage}), domContainer);
+  // テキストボックスへのアイコン表示はしないためコード削除
 }
 
 main();
