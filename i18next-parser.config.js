@@ -17,6 +17,6 @@ module.exports = {
     }],
     default: ["JavascriptLexer"]
   },
-  locales: ["en-UK"],
+  locales: ["ja-JP"],
   useKeysAsDefaultValue: true,
 };

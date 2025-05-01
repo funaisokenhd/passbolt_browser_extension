@@ -12,7 +12,7 @@
  * @since         3.6.0
  */
 
-import {OpenpgpAssertion} from "../../utils/openpgp/openpgpAssertions";
+import { OpenpgpAssertion } from "../../utils/openpgp/openpgpAssertions";
 import i18n from "../../sdk/i18n";
 import GetGpgKeyInfoService from "../../service/crypto/getGpgKeyInfoService";
 
@@ -55,7 +55,7 @@ class ValidatePrivateGpgKeyRecoverController {
    */
   async exec(armoredKey) {
     const key = await OpenpgpAssertion.readKeyOrFail(armoredKey);
-    OpenpgpAssertion.assertEncryptedPrivateKey(key);
+    OpenpgpAssertion.assertPrivateKey(key);
 
     const keyInfo = await GetGpgKeyInfoService.getKeyInfo(key);
 

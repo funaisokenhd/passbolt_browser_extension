@@ -14,7 +14,7 @@
 import * as openpgp from 'openpgp';
 import i18n from "../../sdk/i18n";
 import Uint8ArrayConvert from "../format/uint8ArrayConvert";
-import {assertNonEmptyString} from "../assertions";
+import { assertNonEmptyString } from "../assertions";
 
 /*
  * ==================================================
@@ -34,7 +34,7 @@ const readKeyOrFail = async armoredKey => {
   }
 
   try {
-    return await openpgp.readKey({armoredKey: armoredKey});
+    return await openpgp.readKey({ armoredKey: armoredKey });
   } catch (error) {
     throw new Error(i18n.t("The key should be a valid openpgp armored key string."));
   }
@@ -72,9 +72,9 @@ const readSessionKeyOrFail = sessionKey => {
     const sessionKeySplit = sessionKey.split(":");
     const algorithm = openpgp.enums.read(openpgp.enums.symmetric, sessionKeySplit[0]);
     const data = Uint8ArrayConvert.fromHex(sessionKeySplit[1]);
-    return {data, algorithm};
+    return { data, algorithm };
   } catch (error) {
-    throw new Error("The session key should be a valid openpgp session key.", {cause: error});
+    throw new Error("The session key should be a valid openpgp session key.", { cause: error });
   }
 };
 
@@ -88,7 +88,7 @@ const createMessageOrFail = async message => {
   if (typeof message !== "string") {
     throw new Error(i18n.t("The message should be of type string."));
   }
-  return openpgp.createMessage({text: message, format: 'utf8'});
+  return openpgp.createMessage({ text: message, format: 'utf8' });
 };
 
 /**
@@ -101,7 +101,7 @@ const createCleartextMessageOrFail = async text => {
   if (typeof text !== "string") {
     throw new Error(i18n.t("The message should be of type string."));
   }
-  return openpgp.createCleartextMessage({text});
+  return openpgp.createCleartextMessage({ text });
 };
 
 /**
@@ -117,7 +117,7 @@ const readMessageOrFail = async message => {
   }
 
   try {
-    return await openpgp.readMessage({armoredMessage: message});
+    return await openpgp.readMessage({ armoredMessage: message });
   } catch (error) {
     throw new Error(i18n.t("The message should be a valid openpgp message."));
   }
@@ -136,7 +136,7 @@ const readClearMessageOrFail = async cleartextMessage => {
   }
 
   try {
-    return await openpgp.readCleartextMessage({cleartextMessage});
+    return await openpgp.readCleartextMessage({ cleartextMessage });
   } catch (error) {
     throw new Error(i18n.t("The message should be a valid openpgp message."));
   }
